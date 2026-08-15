@@ -173,7 +173,11 @@ class PhoneControlManager(private val context: Context) {
                 putExtra(AlarmClock.EXTRA_SKIP_UI, false)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-            context.startActivity(intent)
+            if (intent.resolveActivity(context.packageManager) != null) {
+                context.startActivity(intent)
+            } else {
+                Toast.makeText(context, "Timer set for $minutes minutes ($label)", Toast.LENGTH_SHORT).show()
+            }
         } catch (e: Exception) {
             Toast.makeText(context, "Timer set for $minutes minutes ($label)", Toast.LENGTH_SHORT).show()
         }
@@ -188,7 +192,11 @@ class PhoneControlManager(private val context: Context) {
                 putExtra(AlarmClock.EXTRA_SKIP_UI, false)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-            context.startActivity(intent)
+            if (intent.resolveActivity(context.packageManager) != null) {
+                context.startActivity(intent)
+            } else {
+                Toast.makeText(context, "Alarm set for $hour:$minute", Toast.LENGTH_SHORT).show()
+            }
         } catch (e: Exception) {
             Toast.makeText(context, "Alarm set for $hour:$minute", Toast.LENGTH_SHORT).show()
         }
@@ -199,7 +207,9 @@ class PhoneControlManager(private val context: Context) {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-            context.startActivity(intent)
+            if (intent.resolveActivity(context.packageManager) != null) {
+                context.startActivity(intent)
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Failed to launch camera: ${e.message}")
         }
@@ -358,7 +368,9 @@ class PhoneControlManager(private val context: Context) {
             val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber")).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-            context.startActivity(intent)
+            if (intent.resolveActivity(context.packageManager) != null) {
+                context.startActivity(intent)
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Failed to dial: ${e.message}")
         }
@@ -370,7 +382,9 @@ class PhoneControlManager(private val context: Context) {
                 putExtra("sms_body", message)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-            context.startActivity(intent)
+            if (intent.resolveActivity(context.packageManager) != null) {
+                context.startActivity(intent)
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Failed to compose SMS: ${e.message}")
         }

@@ -16,12 +16,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.GraphicEq
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Stop
-import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Icon
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -113,6 +115,8 @@ fun VoiceOrb(
         else -> ElectricBlue.copy(alpha = 0.28f)
     }
 
+    val haptic = LocalHapticFeedback.current
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
@@ -121,7 +125,10 @@ fun VoiceOrb(
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = ripple(bounded = false, radius = 100.dp),
-                onClick = onClick
+                onClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    onClick()
+                }
             )
     ) {
         // Dynamic pulsating Canvas ripples, soundwaves, and equalizer orbit
@@ -259,7 +266,7 @@ fun VoiceOrb(
             ) {
                 val icon = when {
                     isListening || isWakeWordGlow -> Icons.Default.Mic
-                    isSpeaking -> Icons.Default.VolumeUp
+                    isSpeaking -> Icons.AutoMirrored.Filled.VolumeUp
                     isLoading -> Icons.Default.Stop
                     else -> Icons.Default.Mic
                 }

@@ -41,6 +41,15 @@ class ScreenAutomationService : AccessibilityService() {
         private val _lastDetectedApp = MutableStateFlow("")
         val lastDetectedApp: StateFlow<String> = _lastDetectedApp.asStateFlow()
 
+        private val securityBlacklistPackages = setOf(
+            "com.android.settings.password",
+            "com.eg.android.AlipayGphone",
+            "com.bkash.app",
+            "com.dbbl.nexus.pay",
+            "com.dutchbangla.rocket",
+            "com.nagad.customer"
+        )
+
         fun getInstance(): ScreenAutomationService? = instance
     }
 
@@ -54,8 +63,13 @@ class ScreenAutomationService : AccessibilityService() {
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if (event == null) return
         
-        event.packageName?.let {
-            _lastDetectedApp.value = it.toString()
+        event.packageName?.let { pkg ->
+            val pkgStr = pkg.toString()
+            _lastDetectedApp.value = pkgStr
+            if (securityBlacklistPackages.contains(pkgStr)) {
+                _currentScreenSummary.value = "[Protected Security/Financial App]"
+                return
+            }
         }
 
         if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED ||
@@ -91,6 +105,9 @@ class ScreenAutomationService : AccessibilityService() {
 
     private fun traverseNode(node: AccessibilityNodeInfo?, list: MutableList<ScreenElement>) {
         if (node == null) return
+
+        // Skip password / sensitive entry fields for security
+        if (node.isPassword) return
 
         val text = node.text?.toString() ?: ""
         val desc = node.contentDescription?.toString() ?: ""
