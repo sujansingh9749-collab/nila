@@ -2,7 +2,7 @@ name: Build Kivy Flask APK
 
 on:
   push:
-    branches: [ "main" ] # আপনার ব্র্যাঞ্চের নাম master হলে master লিখুন
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -43,8 +43,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install buildozer cython
 
-    - name: Build with Buildozer
-      run: buildozer android debug
+    - name: Auto-accept SDK Licenses & Build APK
+      run: |
+        yes | buildozer android debug
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
