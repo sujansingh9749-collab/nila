@@ -31,11 +31,28 @@ class WakeWordDetector(private val context: Context) {
     var wakeWordList: List<String> = listOf("নীলা", "nila", "neela", "hey neela", "hey nila", "হ্যালো নীলা", "hey assistant", "jarvis", "alexa", "হ্যালো", "নমস্কার")
     var sensitivityLevel: Float = 0.7f // 0.1 to 1.0
 
+    private var retryCount = 0
+
+    companion object {
+        private const val MAX_RETRY_DELAY_MS = 10000L
+        private const val BASE_RETRY_DELAY_MS = 600L
+    }
+
     private val restartHandler = Handler(Looper.getMainLooper())
     private val restartRunnable = Runnable {
         if (isContinuousListening) {
             startInternalListening()
         }
+    }
+
+    private fun getNextRetryDelay(): Long {
+        val delay = BASE_RETRY_DELAY_MS * (1 shl retryCount.coerceAtMost(4))
+        retryCount++
+        return delay.coerceAtMost(MAX_RETRY_DELAY_MS)
+    }
+
+    private fun resetRetryCount() {
+        retryCount = 0
     }
 
     fun start() {
@@ -74,12 +91,14 @@ class WakeWordDetector(private val context: Context) {
 
                         override fun onError(error: Int) {
                             if (isContinuousListening) {
-                                // Restart listening after brief delay
-                                restartHandler.postDelayed(restartRunnable, 600)
+                                val retryDelay = getNextRetryDelay()
+                                Log.d(TAG, "Wake word error ($error), retrying in ${retryDelay}ms (attempt $retryCount)")
+                                restartHandler.postDelayed(restartRunnable, retryDelay)
                             }
                         }
 
                         override fun onResults(results: Bundle?) {
+                            resetRetryCount()
                             val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                             checkMatchesForWakeWord(matches)
                             if (isContinuousListening) {

@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">নীলা</string>
     <string name="accessibility_service_description">স্ক্রিনের উপাদান বোঝা, স্বয়ংক্রিয় ক্লিক, স্ক্রোল এবং ভয়েস নির্দেশে স্ক্রিন পরিচালনা করার জন্য নীলা অ্যাক্সেসিবিলিটি সার্ভিস।</string>
+    <string name="nav_assistant">সহায়ক</string>
+    <string name="nav_voice">Voice</string>
+    <string name="nav_control_bn">কন্ট্রোল</string>
+    <string name="nav_control_en">Control</string>
+    <string name="nav_macros_bn">রুটিন</string>
+    <string name="nav_macros_en">Macros</string>
+    <string name="nav_tools_bn">টুলস</string>
+    <string name="nav_tools_en">Tools</string>
+    <string name="nav_settings_bn">সেটিংস</string>
+    <string name="nav_settings_en">Settings</string>
+    <string name="wake_word_detected_bn">\'নীলা\' সাড়া দিয়েছে! শুনছি...</string>
+    <string name="wake_word_detected_en">\'Nila\' detected! Listening...</string>
+    <string name="standby_silence_bn">কিছুক্ষণ নীরব থাকায় সহকারী বিরতিতে গেছে। ডাকলে \'নীলা\' বলুন।</string>
+    <string name="standby_silence_en">Standby mode due to silence. Say \'Nila\' to resume.</string>
 </resources>
