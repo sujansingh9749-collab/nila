@@ -1,0 +1,6 @@
+{
+  "name": "নীলা - AI Voice Assistant",
+  "description": "Smart Bengali Voice Assistant named নীলা with Wake Word detection, Gemini intelligence, and Phone Control.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

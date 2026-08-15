@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">নীলা</string>
+    <string name="accessibility_service_description">স্ক্রিনের উপাদান বোঝা, স্বয়ংক্রিয় ক্লিক, স্ক্রোল এবং ভয়েস নির্দেশে স্ক্রিন পরিচালনা করার জন্য নীলা অ্যাক্সেসিবিলিটি সার্ভিস।</string>
+</resources>
