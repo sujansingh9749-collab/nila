@@ -6,7 +6,7 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 0.1
 
-requirements = python3,kivy,flask,jinja2,markupsafe,werkzeug,itsdangerous,click
+requirements = python3==3.11,kivy,flask,jinja2,markupsafe,werkzeug,itsdangerous,click
 
 orientation = portrait
 fullscreen = 0
